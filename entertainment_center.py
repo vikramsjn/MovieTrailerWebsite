@@ -2,6 +2,7 @@ import fresh_tomatoes
 import media
 import themoviedb as mdb
 
+
 def main():
     LANGUAGE = "en-US"
 
@@ -19,4 +20,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-

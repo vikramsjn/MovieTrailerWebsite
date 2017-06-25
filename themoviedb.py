@@ -7,7 +7,12 @@ from urllib import urlencode
 import requests
 import media
 
+
 class MovieDb():
+    """
+    Class that wraps REST calls - for the Movie Trailer Website Generator
+    """
+
     def __init__(self, api_key, language):
         self.api_key = api_key
         self.language = language
@@ -19,8 +24,9 @@ class MovieDb():
         list_id - themoviedb.org public list id (number)
         """
         LIST_URL = "https://api.themoviedb.org/3/list/"
-        query_string = urlencode({"api_key": self.api_key, "language" : self.language}, doseq=True)
-        url = LIST_URL + list_id + "?" + query_string
+        # query_string = urlencode({"api_key": self.api_key, "language": self.language}, doseq=True)
+        parm_dict = {"api_key": self.api_key, "language": self.language}
+        url = LIST_URL + list_id + "?" + urlencode(parm_dict, doseq=True)
         # print url
 
         response = requests.get(url)
@@ -35,15 +41,17 @@ class MovieDb():
 
     def movieid_first_video_url(self, movie_id):
         """
-        Makes REST call to themoviedb.org, for movie id - and returns youtube video url
+        Makes REST call to themoviedb.org, for movie id - and returns youtube
+        video url
         Params:
         movie_id - themoviedb.org movie id (number)
         """
         YOUTUBE_URL = "https://www.youtube.com/watch?v="
         VIDEOS_URL = "https://api.themoviedb.org/3/movie/%s/videos"
         url_with_movieid = VIDEOS_URL % (movie_id)
-        query_string = urlencode({"api_key": self.api_key, "language" : self.language}, doseq=True)
-        url = url_with_movieid + "?" + query_string
+        # query_string = urlencode({"api_key": self.api_key, "language": self.language}, doseq=True)
+        parm_dict = {"api_key": self.api_key, "language": self.language}
+        url = url_with_movieid + "?" + urlencode(parm_dict, doseq=True)
         # print url
 
         response = requests.get(url)
@@ -55,16 +63,18 @@ class MovieDb():
 
     def list_to_movie_objects(self, list_id):
         """
-        Makes REST call to themoviedb.org, for online list of movies - and returns Movie objects
+        Makes REST call to themoviedb.org, for online list of movies
+        - and returns Movie objects
         Params:
         list_id - themoviedb.org list id (number)
         """
         IMAGE_URL = "https://image.tmdb.org/t/p/w500"
 
         parsed_json = self.request_list_json(list_id)
+
         if parsed_json is None or len(parsed_json['items']) == 0:
             return None
-            
+
         movies_json = parsed_json['items']
 
         movies_list = []
@@ -87,14 +97,12 @@ class MovieDb():
             # print('Video url: ' + movie_video_url)
             # print('')
 
-            movie_object = media.Movie(movie_title, movie_overview, movie_image_url, movie_video_url)
+            movie_object = media.Movie(movie_title,
+                                       movie_overview,
+                                       movie_image_url,
+                                       movie_video_url)
             movies_list.append(movie_object)
 
             movie_counter += 1
 
         return movies_list
-
-
-
-
-
