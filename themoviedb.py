@@ -24,7 +24,6 @@ class MovieDb():
         list_id - themoviedb.org public list id (number)
         """
         LIST_URL = "https://api.themoviedb.org/3/list/"
-        # query_string = urlencode({"api_key": self.api_key, "language": self.language}, doseq=True)
         parm_dict = {"api_key": self.api_key, "language": self.language}
         url = LIST_URL + list_id + "?" + urlencode(parm_dict, doseq=True)
         # print url
@@ -49,7 +48,6 @@ class MovieDb():
         YOUTUBE_URL = "https://www.youtube.com/watch?v="
         VIDEOS_URL = "https://api.themoviedb.org/3/movie/%s/videos"
         url_with_movieid = VIDEOS_URL % (movie_id)
-        # query_string = urlencode({"api_key": self.api_key, "language": self.language}, doseq=True)
         parm_dict = {"api_key": self.api_key, "language": self.language}
         url = url_with_movieid + "?" + urlencode(parm_dict, doseq=True)
         # print url
